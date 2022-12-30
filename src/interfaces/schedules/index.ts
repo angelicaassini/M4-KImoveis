@@ -4,3 +4,10 @@ export interface IScheduleRequest {
     date: string
     hour: string
 }
+
+export interface IScheduleResponse {
+    id: string;
+    date: string;
+    hour: string;
+  }
+  
