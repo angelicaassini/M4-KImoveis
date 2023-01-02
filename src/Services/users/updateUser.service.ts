@@ -1,16 +1,16 @@
 import AppDataSource from "../../data-source";
 import { User } from "../../entities/user.entity";
 import {
+  IUser,
   IUserRequest,
-  IUserRequestUpdate,
-  IUserResponse,
+  IUserUpdate,
 } from "../../interfaces/users";
 import { userResponseWithoutPasswordSchema } from "../../schemas/user.schema";
 
 const updateUserService = async (
-  userData: IUserRequestUpdate,
+  userData: IUserUpdate,
   params_id: string
-): Promise<IUserResponse> => {
+): Promise<IUser> => {
   const userRepository = AppDataSource.getRepository(User);
 
   const findUser: IUserRequest = await userRepository.findOneBy({

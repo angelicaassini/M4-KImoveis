@@ -1,6 +1,6 @@
 import AppDataSource from "../../data-source";
 import { User } from "../../entities/user.entity";
-import { IUserRequest, IUserResponse } from "../../interfaces/users";
+import { IUser, IUserRequest} from "../../interfaces/users";
 import {
   userRequestSchema,
   userResponseWithoutPasswordSchema,
@@ -8,7 +8,7 @@ import {
 
 const createUserService = async (
   userData: IUserRequest
-): Promise<IUserResponse> => {
+): Promise<IUser> => {
   const userRepository = AppDataSource.getRepository(User);
 
   const validatedUserData = await userRequestSchema.validate(userData);

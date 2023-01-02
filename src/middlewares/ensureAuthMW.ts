@@ -10,7 +10,6 @@ const ensureAuthMW = async (
 ) => {
   let token = req.headers.authorization;
 
-
   if (!token) {
     throw new AppError("Token not found", 401);
   }
@@ -25,7 +24,8 @@ const ensureAuthMW = async (
       id: decoded.sub,
       isAdm: decoded.isAdm,
     };
-    
+
+   
     return next();
   });
 };

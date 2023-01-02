@@ -11,7 +11,7 @@ import {
 } from "typeorm";
 import Address from "./address.entity";
 import Category from "./category.entity";
-import ScheduleUserProperty from "./scheduleUserProperty.entity";
+import Schedule from "./schedule.entity";
 
 @Entity("properties")
 class Property {
@@ -40,10 +40,7 @@ class Property {
   @ManyToOne(() => Category, (category) => category.properties)
   category: Category;
 
-  @OneToMany(
-    () => ScheduleUserProperty,
-    (schedule_user_property) => schedule_user_property.property
-  )
-  schedules_user_property: ScheduleUserProperty[];
+  @OneToMany(() => Schedule, (schedule) => schedule.property)
+  schedules: Schedule[];
 }
 export default Property;

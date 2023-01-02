@@ -9,7 +9,7 @@ import {
   DeleteDateColumn,
   OneToMany,
 } from "typeorm";
-import ScheduleUserProperty from "./scheduleUserProperty.entity";
+import Schedule from "./schedule.entity";
 
 @Entity("users")
 class User {
@@ -46,10 +46,10 @@ class User {
   }
 
   @OneToMany(
-    () => ScheduleUserProperty,
-    (schedule_user_property) => schedule_user_property.user
+    () => Schedule,
+    (schedule) => schedule.user
   )
-  schedules_user_property: ScheduleUserProperty[];
+  schedules: Schedule[];
 }
 export { User };
 

@@ -12,7 +12,7 @@ const ensureEmailNotExistsMW = async (
   const foundUser = await userRepo.findOneBy({ email: req.body.email });
 
   if (foundUser) {
-    throw new AppError("Email already exists", 400);
+    throw new AppError("Email already exists", 409);
   }
 
   return next();

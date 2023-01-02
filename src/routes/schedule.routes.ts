@@ -12,13 +12,13 @@ import { scheduleRequestSchema } from "../schemas/schedule.schema";
 const scheduleRoutes = Router();
 scheduleRoutes.post(
   "/schedules",
-  ensureAuthMW,
   ensureHourAndDateAreValid,
   ensureDataIsValidMW(scheduleRequestSchema),
   scheduleVisitController
 );
 scheduleRoutes.get(
   "/schedules/properties/:propertyId",
+  ensureAuthMW,
   ensureIsAdminMW,
   listAllSchedulesController
 );

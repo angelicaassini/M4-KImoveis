@@ -16,14 +16,11 @@ const createPropertyService = async (
   const validatedProperty = await propertyRequestSchema.validate(propertyData);
   const createdProperty = propertyRepo.create(validatedProperty);
   await propertyRepo.save(createdProperty);
-
+  console.log("createdProperty:", createdProperty);
   const propertyResponseValidated = await propertyResponseSchema.validate(
-    createdProperty,
-    {
-      stripUnknown: true,
-      abortEarly: false,
-    }
+    createdProperty
   );
+  console.log("propertyResponseValidated:", propertyResponseValidated);
   return propertyResponseValidated;
 };
 export default createPropertyService;

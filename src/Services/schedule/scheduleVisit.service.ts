@@ -8,19 +8,24 @@ const scheduleVisitService = async (
   scheduleData: IScheduleRequest
 ) => {
   const userRepo = AppDataSource.getRepository(User);
+  
   const scheduleRepo = AppDataSource.getRepository(Schedule);
+  const scheduleEntity = scheduleRepo.create(scheduleData)
+  const schedule = await scheduleRepo.save(scheduleEntity)
 
   const scheduledVisits = await userRepo
     .createQueryBuilder("users")
     .innerJoinAndSelect("users.schedules", "alias_schedules")
-    .innerJoinAndSelect("schedules.property", "alias_property")
+    .innerJoinAndSelect("alias_schedules.property", "alias_property")
     .where("user.id = :id_user", { id_user: userId })
-    .where("property_id = :id_property", { id_property: scheduleData })
-    .where("scheduleDate.date !== ScheduleDate", {
-      ScheduleDate: Schedule,
+    .where("property_id != :id_property", {
+      id_property: scheduleData.propertyId,
     })
-    .where("scheduleDate.hour !== ScheduleHour", {
-      ScheduleHour: Schedule,
+    .where("scheduleDate.date != schedule_date", {
+      schedule_date: scheduleData.date,
+    })
+    .where("scheduleDate.hour != schedule-hour", {
+      schedule_hour: scheduleData.hour,
     })
     .getOne();
 

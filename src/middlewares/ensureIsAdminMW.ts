@@ -9,6 +9,7 @@ const ensureIsAdminMW = async (
   if (!req.user.isAdm) {
     throw new AppError("User is not admin", 403);
   }
+  
   return next();
 };
 export default ensureIsAdminMW;

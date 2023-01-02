@@ -6,6 +6,7 @@ import {
   IPropertyRequest,
   IPropertyResponse,
 } from "../interfaces/properties";
+import { categoryResponseSchema } from "./category.schema";
 
 const addressRequestSchema: SchemaOf<IAddressRequest> = yup.object().shape({
   district: yup.string().required(),
@@ -32,11 +33,12 @@ const propertyRequestSchema: SchemaOf<IPropertyRequest> = yup.object().shape({
 });
 
 const propertyResponseSchema: SchemaOf<IPropertyResponse> = yup.object().shape({
-  categoryId: yup.string().required(),
+  id: yup.string().required(),
   sold: yup.boolean().required(),
   value: yup.number().required(),
   size: yup.number().required(),
-  address: addressRequestSchema,
+  address: adressResponseSchema,
+  category: categoryResponseSchema,
   createdAt: yup.date().required(),
   updatedAt: yup.date().required(),
 });
