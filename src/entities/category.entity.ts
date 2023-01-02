@@ -9,7 +9,7 @@ class Category {
   @Column({ unique: true })
   name: string;
 
-  @OneToMany(() => Property, (property) => property.category)
+  @OneToMany(() => Property, (property) => property.category, { eager: true })
   properties: Property[];
 }
 export default Category;

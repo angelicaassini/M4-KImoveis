@@ -1,17 +1,24 @@
 import AppDataSource from "../../data-source";
 import Category from "../../entities/category.entity";
+import AppError from "../../errors/AppError";
 import { ICategoryResponse } from "../../interfaces/categories";
 
 const listAllPropertiesFromCategoryByIdService = async (
-  categoryId: string
-): Promise<ICategoryResponse[]> => {
+  id: string
+): Promise<ICategoryResponse> => {
   const categoryRepo = AppDataSource.getRepository(Category);
 
-  const filtredCategories = await categoryRepo
-    .createQueryBuilder("categories")
-    .where("category.id = :id_category", { id_category: categoryId })
-    .getMany();
+  const filtredCategory = await categoryRepo.findOne({
+    where: { id },
+    relations: {
+      properties: true,
+    },
+  });
 
-  return filtredCategories;
+  if (!filtredCategory) {
+    throw new AppError("This category doesn't exist", 404);
+  }
+
+  return filtredCategory;
 };
 export default listAllPropertiesFromCategoryByIdService;

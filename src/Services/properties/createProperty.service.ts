@@ -1,26 +1,48 @@
 import AppDataSource from "../../data-source";
+import Address from "../../entities/address.entity";
+import Category from "../../entities/category.entity";
 import Property from "../../entities/property.entity";
+import AppError from "../../errors/AppError";
 import {
   IPropertyRequest,
   IPropertyResponse,
 } from "../../interfaces/properties";
-import {
-  propertyRequestSchema,
-  propertyResponseSchema,
-} from "../../schemas/addressAndProperty.schema";
+
 
 const createPropertyService = async (
   propertyData: IPropertyRequest
 ): Promise<IPropertyResponse> => {
   const propertyRepo = AppDataSource.getRepository(Property);
-  const validatedProperty = await propertyRequestSchema.validate(propertyData);
-  const createdProperty = propertyRepo.create(validatedProperty);
+  const categoryRepo = AppDataSource.getRepository(Category);
+  const addressRepo = AppDataSource.getRepository(Address);
+
+  if (propertyData.address.state.length > 2) {
+    throw new AppError("This state must be 2 characters", 400);
+  }
+
+  if (propertyData.address.zipCode.length > 8) {
+    throw new AppError("This zipCode must be 8 characters", 400);
+  }
+
+  const foundCategory = await categoryRepo.findOneBy({
+    id: propertyData.categoryId,
+  });
+  
+  if (!foundCategory) {
+    throw new AppError("This category doesn't exist", 404);
+  }
+
+  const createdAddress = addressRepo.create(propertyData.address);
+  await addressRepo.save(createdAddress);
+
+  const createdProperty = propertyRepo.create({
+    value: propertyData.value,
+    size: propertyData.size,
+    address: createdAddress,
+    category: foundCategory,
+  });
   await propertyRepo.save(createdProperty);
-  console.log("createdProperty:", createdProperty);
-  const propertyResponseValidated = await propertyResponseSchema.validate(
-    createdProperty
-  );
-  console.log("propertyResponseValidated:", propertyResponseValidated);
-  return propertyResponseValidated;
+
+  return createdProperty;
 };
 export default createPropertyService;

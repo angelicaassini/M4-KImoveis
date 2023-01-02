@@ -22,7 +22,7 @@ categoryRoutes.post(
 );
 categoryRoutes.get("/categories", listAllCategoriesController);
 categoryRoutes.get(
-  "/categories/:categoryId/properties",
+  "/categories/:id/properties",
   listAllPropertiesFromCategoryByIdController
 );
 
