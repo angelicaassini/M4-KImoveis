@@ -20,7 +20,7 @@ const listAllPropertiesFromCategoryByIdController = async (
   res: Response
 ) => {
   const categoryId: string = req.params.id;
-  console.log("categoryIDCONTROLLER:", categoryId);
+
   const data = await listAllPropertiesFromCategoryByIdService(categoryId);
   return res.status(200).json(data);
 };

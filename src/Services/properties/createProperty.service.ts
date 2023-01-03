@@ -8,7 +8,6 @@ import {
   IPropertyResponse,
 } from "../../interfaces/properties";
 
-
 const createPropertyService = async (
   propertyData: IPropertyRequest
 ): Promise<IPropertyResponse> => {
@@ -24,16 +23,16 @@ const createPropertyService = async (
     throw new AppError("This zipCode must be 8 characters", 400);
   }
 
+  const createdAddress = addressRepo.create(propertyData.address);
+  await addressRepo.save(createdAddress);
+
   const foundCategory = await categoryRepo.findOneBy({
     id: propertyData.categoryId,
   });
-  
+
   if (!foundCategory) {
     throw new AppError("This category doesn't exist", 404);
   }
-
-  const createdAddress = addressRepo.create(propertyData.address);
-  await addressRepo.save(createdAddress);
 
   const createdProperty = propertyRepo.create({
     value: propertyData.value,

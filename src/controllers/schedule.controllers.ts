@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { IScheduleRequest } from "../interfaces/schedules";
 import listAllSchedulesService from "../Services/schedule/listAllSchedules.service";
-import scheduleVisitService from "../Services/schedule/scheduleVisit.service";
+import createScheduleService from "../Services/schedule/scheduleVisit.service";
 
 const listAllSchedulesController = async (req: Request, res: Response) => {
   const propertyId: string = req.params.id;
@@ -9,11 +9,13 @@ const listAllSchedulesController = async (req: Request, res: Response) => {
   return res.status(201).json(data);
 };
 
-const scheduleVisitController = async (req: Request, res: Response) => {
+const createScheduleController = async (req: Request, res: Response) => {
   const scheduleData: IScheduleRequest = req.body;
-  const userId: string = req.user.id;
-  const data = await scheduleVisitService(userId, scheduleData);
-  return res.status(201).json(data);
+  scheduleData.userId = req.user.id;
+  await createScheduleService(scheduleData);
+  return res.status(201).json({
+    message: "Schedule created",
+  });
 };
 
-export { scheduleVisitController, listAllSchedulesController };
+export { createScheduleController, listAllSchedulesController };

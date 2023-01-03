@@ -35,6 +35,10 @@ const loginUserService = async (userData: IUserLogin): Promise<string> => {
     }
   );
 
+  if (user.isActive === false) {
+    throw new AppError("This user is not active!", 400);
+  }
+
   return token;
 };
 export default loginUserService;

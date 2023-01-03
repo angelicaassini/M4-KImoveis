@@ -5,7 +5,7 @@ import { IScheduleRequest, IScheduleResponse } from "../interfaces/schedules";
 const scheduleRequestSchema: SchemaOf<IScheduleRequest> = yup.object().shape({
   date: yup.string().required(),
   hour: yup.string().required(),
-  userId: yup.string().required(),
+  userId: yup.string().optional(),
   propertyId: yup.string().required(),
 });
 

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
+  createScheduleController,
   listAllSchedulesController,
-  scheduleVisitController,
 } from "../controllers/schedule.controllers";
 import ensureAuthMW from "../middlewares/ensureAuthMW";
 import ensureDataIsValidMW from "../middlewares/ensureDataIsValidMW";
@@ -12,12 +12,13 @@ import { scheduleRequestSchema } from "../schemas/schedule.schema";
 const scheduleRoutes = Router();
 scheduleRoutes.post(
   "/schedules",
+  ensureAuthMW,
   ensureHourAndDateAreValid,
   ensureDataIsValidMW(scheduleRequestSchema),
-  scheduleVisitController
+  createScheduleController
 );
 scheduleRoutes.get(
-  "/schedules/properties/:propertyId",
+  "/schedules/properties/:id",
   ensureAuthMW,
   ensureIsAdminMW,
   listAllSchedulesController
