@@ -11,13 +11,15 @@ const listAllSchedulesService = async (propertyId: string) => {
   if (!foundProperty) {
     throw new AppError("This property doesn't exist", 404);
   }
-  console.log("&&&&&&&&&&foundproperty", foundProperty);
 
   const scheduledVisits = await propertyRepo
     .createQueryBuilder("properties")
     .leftJoinAndSelect("properties.schedules", "alias_schedules")
+    .innerJoinAndSelect("alias_schedules.user", "alias_user")
+    .innerJoinAndSelect("properties.address", "alias_address")
+    .innerJoinAndSelect("properties.category", "alias_category")
     .where("properties.id = :id_property", { id_property: propertyId })
-    .getMany();
+    .getOne();
 
   return scheduledVisits;
 };
